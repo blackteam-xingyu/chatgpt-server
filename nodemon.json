@@ -1,0 +1,10 @@
+{
+  "ignore": [".git", "node_modules/*", "dist/*"],
+  "watch": ["src/", "conf.d/"],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "exec": "tsc && node --experimental-modules --es-module-specifier-resolution=node dist/server.js",
+  "delay": "850",
+  "ext": "ts,ejs,yml,json,yaml"
+}

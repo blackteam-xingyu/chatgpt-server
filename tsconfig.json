@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "outDir": "dist", // TS文件编译后会放入到此文件夹内
+    "baseUrl": ".",
+    "paths": {
+      "*": ["node_modules/*", "src/*"]
+    }
+  },
+  "include": ["src/**/*", "module.d.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+  ],
+  "ts-node": {"esm": true}
+}
