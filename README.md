@@ -12,6 +12,8 @@
 5、点击右上角个人设置头像，点击Account,打开API Key标签页，将token复制，填入config.yaml的token属性中
 
 6、执行chatgpt-server，post http://127.0.0.1:3000/send
+
+7、详情可见示例http://tangtangnas.live:9003
 #### request
 ```json5
 {
