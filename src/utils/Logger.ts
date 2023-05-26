@@ -1,7 +1,7 @@
 import path from 'path';
 import log4js from 'log4js';
 import Config from './Config';
-const baseFilePath = path.resolve(Config.log.path || 'logs');
+const baseFilePath = Config.log.path || path.resolve('logs');
 const baseAppenderConfig: log4js.Appender = {
   type: 'dateFile',
   pattern: 'yyyy-MM-dd.log',

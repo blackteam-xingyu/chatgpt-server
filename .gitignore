@@ -6,3 +6,4 @@ dist.*
 dist-pkg.*
 logs/*
 conf.d/*
+yarn.lock

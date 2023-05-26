@@ -5,13 +5,26 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development tsc && node --experimental-modules --es-module-specifier-resolution=node dist/server.js",
-    "dev": "NODE_ENV=development nodemon"
+    "start": "NODE_ENV=development tsc && node  dist/server.js",
+    "dev": "NODE_ENV=development nodemon",
+    "build": "tsc && rm -rf ./dist-pkg && pkg . && cp -r conf.d dist-pkg/ && tar -zcvf dist-pkg.tar.gz ./dist-pkg"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "blackteam_xingyu",
+  "license": "MIT",
+  "bin": "dist/server.js",
+  "pkg": {
+    "options": [
+      "experimental-modules",
+      "es-module-specifier-resolution=node"
+    ],
+    "scripts": "dist/**/*.js",
+    "targets": [
+      "node16-linux-x64"
+    ],
+    "outputPath": "dist-pkg"
+  },
   "dependencies": {
-    "axios": "^1.4.0",
+    "axios": "0.27.2",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-json-error": "^3.1.2",
@@ -34,6 +47,5 @@
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
-  },
-  "type": "module"
+  }
 }

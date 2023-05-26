@@ -22,7 +22,7 @@ declare interface SteamShipConfig {
   plugin: string;
 }
 declare interface LogConfig {
-  path: string;
+  path?: string;
 }
 class Config {
   constructor() {
@@ -40,9 +40,7 @@ class Config {
       workspace: '',
       plugin: '',
     };
-    this.log = {
-      path: '~/.config/steamship/logs',
-    };
+    this.log = {};
     try {
       const buffer = fs.readFileSync(process.cwd() + '/conf.d/config.yaml', 'utf-8');
       let config = YAML.parse(buffer);

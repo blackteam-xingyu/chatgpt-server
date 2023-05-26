@@ -1,8 +1,8 @@
 import axios from 'axios';
 import Config from './Config';
 import tunnel from 'tunnel';
-axios.defaults.headers['authorization'] = 'Bearer ' + Config.steamship.token;
-axios.defaults.headers['x-workspace-id'] = Config.steamship.workspace;
+axios.defaults.headers.common['authorization'] = 'Bearer ' + Config.steamship.token;
+axios.defaults.headers.common['x-workspace-id'] = Config.steamship.workspace;
 const getAxiosConfig = () => {
   let config: Record<string, any> = {
     timeout: 2 * 60 * 1000,
@@ -21,7 +21,7 @@ const getAxiosConfig = () => {
     });
 
     config.httpsAgent = agent;
-    console.log(`已使用代理——host:${config.proxy.host}, port:${config.proxy.port}`);
+    console.log(`已使用代理——host:${Config.server.proxy.host}, port:${Config.server.proxy.port || 80}`);
   }
   return config;
 };
