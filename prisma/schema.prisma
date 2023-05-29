@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = "debian-openssl-3.0.x"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ChatHistory {
+  id       Int       @id @default(autoincrement())
+  message  Message[]
+  updateAt DateTime  @updatedAt
+}
+
+model Message {
+  id            Int          @id @default(autoincrement())
+  text          String
+  author        String
+  insertAt      DateTime     @default(now())
+  ChatHistory   ChatHistory? @relation(fields: [chatHistoryId], references: [id])
+  chatHistoryId Int?
+}

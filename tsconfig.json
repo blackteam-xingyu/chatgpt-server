@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -12,12 +12,10 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*", "src/*"]
-    }
+    },
+    "lib": ["DOM", "ESNext"]
   },
   "include": ["src/**/*", "module.d.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-  ],
-  "ts-node": {"esm": true}
+  "exclude": ["node_modules", "dist"],
+  "ts-node": { "esm": true }
 }

@@ -1,8 +1,6 @@
 import axios from 'axios';
 import Config from './Config';
 import tunnel from 'tunnel';
-axios.defaults.headers.common['authorization'] = 'Bearer ' + Config.steamship.token;
-axios.defaults.headers.common['x-workspace-id'] = Config.steamship.workspace;
 const getAxiosConfig = () => {
   let config: Record<string, any> = {
     timeout: 2 * 60 * 1000,

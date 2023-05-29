@@ -34,7 +34,7 @@ log4js.configure({
     },
   },
   categories: {
-    tracer: { appenders: getCategoryAppenders(['tracerFile']), level: 'mark' },
+    tracer: { appenders: getCategoryAppenders(['tracerFile']), level: 'trace' },
     default: { appenders: getCategoryAppenders(['defaultFile']), level: 'info' },
     error: { appenders: getCategoryAppenders(['errorFile']), level: 'error' },
   },
