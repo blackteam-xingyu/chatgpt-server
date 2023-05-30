@@ -1,8 +1,9 @@
 import axios from 'axios';
-import Config from './Config';
 import tunnel from 'tunnel';
+import Config from './Config';
+
 const getAxiosConfig = () => {
-  let config: Record<string, any> = {
+  const config: Record<string, any> = {
     timeout: 2 * 60 * 1000,
   };
   if (Config.server.timeout) {
@@ -11,7 +12,7 @@ const getAxiosConfig = () => {
   console.log(`响应总时长为——${config.timeout / 1000}s`);
   config.proxy = false;
   if (Config.server.proxy && Config.server.proxy.host) {
-    let agent = tunnel.httpsOverHttp({
+    const agent = tunnel.httpsOverHttp({
       proxy: {
         host: Config.server.proxy.host,
         port: Config.server.proxy.port || 80,

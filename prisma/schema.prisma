@@ -3,7 +3,7 @@
 
 generator client {
   provider      = "prisma-client-js"
-  binaryTargets = "debian-openssl-3.0.x"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -12,16 +12,9 @@ datasource db {
 }
 
 model ChatHistory {
-  id       Int       @id @default(autoincrement())
-  message  Message[]
-  updateAt DateTime  @updatedAt
-}
-
-model Message {
-  id            Int          @id @default(autoincrement())
-  text          String
-  author        String
-  insertAt      DateTime     @default(now())
-  ChatHistory   ChatHistory? @relation(fields: [chatHistoryId], references: [id])
-  chatHistoryId Int?
+  id       Int      @id @default(autoincrement())
+  chatcode String
+  text     String
+  author   String
+  insertAt DateTime @default(now())
 }

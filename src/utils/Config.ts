@@ -1,5 +1,6 @@
 import YAML from 'yaml';
 import fs from 'fs';
+
 class Config {
   constructor() {
     this.server = {
@@ -9,16 +10,17 @@ class Config {
 
     this.log = {};
     try {
-      const buffer = fs.readFileSync(process.cwd() + '/conf.d/config.yaml', 'utf-8');
-      let config = YAML.parse(buffer);
-      this.server = { ...this.server, ...config['server'] };
-      this.steamship = { ...this.steamship, ...config['steamship'] };
-      this.openai = { ...this.openai, ...config['openai'] };
-      this.log = { ...this.log, ...config['log'] };
+      const buffer = fs.readFileSync(`${process.cwd()}/conf.d/config.yaml`, 'utf-8');
+      const config = YAML.parse(buffer);
+      this.server = { ...this.server, ...config.server };
+      this.steamship = { ...this.steamship, ...config.steamship };
+      this.openai = { ...this.openai, ...config.openai };
+      this.log = { ...this.log, ...config.log };
     } catch (err) {
       console.error(err);
     }
   }
+
   public steamship?: SteamShipConfig;
   public openai?: OpenAIConfig;
   public server: ServerConfig;
@@ -55,6 +57,7 @@ declare interface OpenAIConfig {
   organization?: string;
   url: OpenAIUrlConfig;
   models: Models;
+  default?: Partial<OpenAIDefaultConfig>;
 }
 
 interface Models {
@@ -80,6 +83,7 @@ interface OpenAIUrlConfig {
   chat: string;
   completions: string;
   edits: string;
+  image: string;
   audio: AudioUrl;
   finetunes: string;
   embeddings: string;
@@ -89,5 +93,27 @@ interface OpenAIUrlConfig {
 interface AudioUrl {
   transcriptions: string;
   translations: string;
+}
+interface OpenAIDefaultConfig {
+  completions: Partial<CompletionsDefaultConfig>;
+  chat: Partial<ChatDefaultConfig>;
+  edits: Partial<EditsDefaultConfig>;
+  image: Partial<ImageDefaultConfig>;
+}
+interface ChatDefaultConfig {
+  memory: number;
+  max_token: number;
+}
+interface CompletionsDefaultConfig {
+  count: number;
+  max_token: number;
+}
+interface EditsDefaultConfig {
+  count: number;
+}
+interface ImageDefaultConfig {
+  size: '256x256' | '512x512' | '1024x1024';
+  count: number;
+  response_format: 'url' | 'b64_json';
 }
 export default new Config();

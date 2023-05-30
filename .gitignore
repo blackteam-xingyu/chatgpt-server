@@ -5,5 +5,6 @@ dist-pkg/*
 dist.*
 dist-pkg.*
 logs/*
-conf.d/*
 yarn.lock
+prisma/db/*
+prisma/migrations/*

@@ -1,11 +1,12 @@
 import Koa from 'koa';
-import router from './routers';
-import Config from './utils/Config';
 import cors from 'koa2-cors/dist';
 import { koaBody } from 'koa-body';
 import onerror from 'koa-onerror';
 import jsonerror from 'koa-json-error';
 import parameter from 'koa-parameter';
+import Config from './utils/Config';
+import router from './routers';
+
 const app = new Koa();
 onerror(app);
 app.use(jsonerror());
@@ -16,4 +17,4 @@ app.use(router.routes());
 const port = Config.server?.port || 3030;
 app.listen(port);
 
-console.log('Server running on port ' + port);
+console.log(`Server running on port ${port}`);

@@ -1,11 +1,12 @@
 import Router from 'koa-router';
-const router = new Router();
 
 import testRouter from './testRouter';
 import steamshipRouter from './steamshipRouter';
 import openAIRouter from './openAIRouter';
 import Config from '../utils/Config';
 import { CHANNEL } from '../utils/Enum';
+
+const router = new Router();
 
 router.use('/test', testRouter.routes(), testRouter.allowedMethods());
 if (Config.server.channel.length <= 0) {

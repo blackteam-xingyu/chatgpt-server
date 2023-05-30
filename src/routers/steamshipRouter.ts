@@ -1,35 +1,38 @@
 import Router from 'koa-router';
 import Koa from 'koa';
+import moment from 'moment';
+import { AxiosResponse } from 'axios';
+import _ from 'lodash';
 import $axios from '../utils/Axios';
 import Config from '../utils/Config';
-import moment from 'moment';
 import sleep from '../utils/Sleep';
 import Model from '../utils/Model';
 import { CODE_STATUS } from '../utils/Enum';
-import { AxiosResponse } from 'axios';
 import Logger from '../utils/Logger';
-import _ from 'lodash';
+
 const router = new Router();
 const steamshipPost = <R>(url: string, data?: any) => {
-  return new Promise<R>(async (resolve, reject) => {
-    try {
-      const res = await $axios.post<any, AxiosResponse<R>>(url, data, {
+  return new Promise<R>((resolve, reject) => {
+    $axios
+      .post<any, AxiosResponse<R>>(url, data, {
         headers: {
-          authorization: ('Bearer ' + Config.steamship?.token) as string,
+          authorization: `Bearer ${Config.steamship?.token}` as string,
           'x-workspace-id': Config.steamship?.workspace as string,
         },
+      })
+      .then((res) => {
+        if (res.status >= 200 && res.status < 300) {
+          Logger.info(res);
+          resolve(res.data);
+        } else {
+          Logger.error(res);
+          reject(new Error('error'));
+        }
+      })
+      .catch((error) => {
+        Logger.error(error);
+        reject(error);
       });
-      if (res.status >= 200 && res.status < 300) {
-        Logger.info(res);
-        resolve(res.data);
-      } else {
-        Logger.error(res);
-        reject(new Error('error'));
-      }
-    } catch (error) {
-      Logger.error(error);
-      reject(error);
-    }
   });
 };
 
@@ -66,17 +69,19 @@ router.post('/send', async (ctx: Koa.Context) => {
         inputFileId: fileId,
         pluginInstance: Config.steamship.plugin,
       });
-      const taskId = status.taskId;
+      const { taskId } = status;
       Logger.info(taskId);
       let pastTime = moment();
       const timeout = Config.server.timeout ? Config.server.timeout * 1000 : 2 * 60 * 1000;
       while (pastTime.diff(startTime) < timeout) {
+        // eslint-disable-next-line no-redeclare, no-await-in-loop
         const { status, data } = await steamshipPost<StatusRecord>(Config.steamship.url.status, {
           taskId,
         });
         Logger.info(status);
         if (status.state === 'succeeded') {
           ctx.body = new Model(CODE_STATUS.SUCCESS, { text: data?.blocks[0].text, fileId }, '响应成功').getRecord();
+          // eslint-disable-next-line no-await-in-loop
           await steamshipPost(Config.steamship.url.block, {
             fileId,
             text: data?.blocks[0].text,
@@ -84,10 +89,12 @@ router.post('/send', async (ctx: Koa.Context) => {
             uploadType: 'none',
           });
           return;
-        } else if (status.state === 'failed') {
+        }
+        if (status.state === 'failed') {
           ctx.body = new Model(CODE_STATUS.ERROR, null, '响应失败').getRecord();
           return;
         }
+        // eslint-disable-next-line no-await-in-loop
         await sleep(2000);
         pastTime = moment();
       }
@@ -98,7 +105,7 @@ router.post('/send', async (ctx: Koa.Context) => {
       ctx.body = new Model(CODE_STATUS.ERROR, error, '响应失败').getRecord();
     }
   } else {
-    ctx.body = new Model(CODE_STATUS.NO_API, null, '接口未开放').getRecord();
+    ctx.body = new Model(CODE_STATUS.NOAPI, null, '接口未开放').getRecord();
   }
 });
 interface FileRecord {
@@ -161,13 +168,4 @@ interface DataRecord {
   blocks: Block[];
 }
 
-interface Block {
-  text: string;
-  tags: Tag[];
-}
-
-interface Tag {
-  name: string;
-  kind: string;
-}
 export default router;
