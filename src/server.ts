@@ -14,7 +14,7 @@ app.use(parameter(app));
 app.use(cors());
 app.use(koaBody({ multipart: true }));
 app.use(router.routes());
-const port = Config.server?.port || 3030;
+const port = Config.server.port || 3000;
 app.listen(port);
 
 console.log(`Server running on port ${port}`);

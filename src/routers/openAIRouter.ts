@@ -3,7 +3,7 @@ import Koa from 'koa';
 import _ from 'lodash';
 import { AxiosResponse } from 'axios';
 import { PassThrough } from 'stream';
-import { PrismaClient } from '@prisma/client';
+import * as client from '@prisma/client';
 import moment from 'moment';
 import Model from '../utils/Model';
 import { CODE_STATUS, OpenAITools } from '../utils/Enum';
@@ -12,7 +12,7 @@ import $axios from '../utils/Axios';
 import Logger from '../utils/Logger';
 import SSE from '../utils/SSE';
 
-const prisma = new PrismaClient();
+const prisma = new client.PrismaClient();
 const router = new Router();
 
 const headers: Record<string, string> = { Authorization: `Bearer ${Config.openai?.token}` as string };

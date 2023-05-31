@@ -15,24 +15,10 @@
   "type": "module",
   "author": "blackteam_xingyu",
   "license": "MIT",
-  "bin": "dist/server.js",
-  "pkg": {
-    "options": [
-      "experimental-modules",
-      "es-module-specifier-resolution=node"
-    ],
-    "scripts": "dist/**/*.js",
-    "targets": [
-      "node16-linux-x64"
-    ],
-    "outputPath": "dist-pkg"
-  },
   "dependencies": {
     "@prisma/client": "^4.15.0",
     "axios": "0.27.2",
-    "http-proxy-agent": "^7.0.0",
     "https-proxy-agent": "^7.0.0",
-    "jsdom": "^22.0.0",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-json-error": "^3.1.2",
@@ -55,13 +41,14 @@
     "@types/node": "^20.2.3",
     "@typescript-eslint/eslint-plugin": "^5.59.8",
     "@typescript-eslint/parser": "^5.59.8",
+    "agent-base": "^7.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
     "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.4",
-    "agent-base": "^7.1.0"
+    "typescript": "^5.0.4"
   }
 }

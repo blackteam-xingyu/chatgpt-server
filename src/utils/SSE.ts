@@ -1,13 +1,13 @@
 import fetchnode from 'node-fetch';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { PassThrough } from 'stream';
-import { PrismaClient } from '@prisma/client';
+import * as client from '@prisma/client';
 import Config from './Config';
 import Model from './Model';
 import { CODE_STATUS, OpenAITools } from './Enum';
 import Logger from './Logger';
 
-const prisma = new PrismaClient();
+const prisma = new client.PrismaClient();
 interface Params<T> {
   body: T;
   headers: Record<string, any>;
