@@ -26,7 +26,7 @@ To configure chat-server, modify the `config.yaml` file located in the `conf.d` 
 
 For detailed API documentation, see 
 
-[API Documents]: ./docs/API.md
+[API Documents](https://github.com/blackteam-xingyu/chatgpt-server/blob/main/docs/API.md)
 
 ## Contribution
 
