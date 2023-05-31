@@ -24,9 +24,7 @@ To configure chat-server, modify the `config.yaml` file located in the `conf.d` 
 
 ## API documentation
 
-For detailed API documentation, see 
-
-[API Documents](./docs/API.md)
+For detailed API documentation, see [API Documents](./docs/API.md) or [API WEB](https://console-docs.apipost.cn/preview/910e3d112ae213d3/0fba00a42081b9d0)
 
 ## Contribution
 
