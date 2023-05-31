@@ -6,6 +6,7 @@ export default class Model<T> {
     this.data = data || null;
     this.message = message || '';
   }
+
   code: CODE_STATUS;
   data: T | null;
   message: string;
@@ -19,6 +20,7 @@ export default class Model<T> {
       message: this.message,
     };
   };
+
   public getSuccessRecord = (data?: T, message?: string) => {
     if (data) this.data = data;
     if (message) this.message = message;
@@ -29,6 +31,7 @@ export default class Model<T> {
       message: this.message,
     };
   };
+
   public getErrorRecord = (data?: T, message?: string) => {
     if (data) this.data = data;
     if (message) this.message = message;
@@ -39,6 +42,7 @@ export default class Model<T> {
       message: this.message,
     };
   };
+
   public getOverTimeRecord = (data?: T) => {
     if (data) this.data = data;
     this.code = CODE_STATUS.OVERTIME;
@@ -48,12 +52,15 @@ export default class Model<T> {
       message: this.message,
     };
   };
+
   public setCode = (code: CODE_STATUS) => {
     this.code = code;
   };
+
   public setData = (data: T) => {
     this.data = data;
   };
+
   public setMessage = (message: string) => {
     this.message = message;
   };

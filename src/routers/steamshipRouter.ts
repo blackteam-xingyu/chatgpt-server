@@ -1,16 +1,42 @@
 import Router from 'koa-router';
 import Koa from 'koa';
+import moment from 'moment';
+import { AxiosResponse } from 'axios';
 import $axios from '../utils/Axios';
 import Config from '../utils/Config';
-import moment from 'moment';
 import sleep from '../utils/Sleep';
 import Model from '../utils/Model';
 import { CODE_STATUS } from '../utils/Enum';
-import { AxiosResponse } from 'axios';
 import Logger from '../utils/Logger';
 
-const sendRouter = (router: Router) => {
-  router.post('/send', async (ctx: Koa.Context) => {
+const router = new Router();
+const steamshipPost = <R>(url: string, data?: any) => {
+  return new Promise<R>((resolve, reject) => {
+    $axios
+      .post<any, AxiosResponse<R>>(url, data, {
+        headers: {
+          authorization: `Bearer ${Config.steamship?.token}` as string,
+          'x-workspace-id': Config.steamship?.workspace as string,
+        },
+      })
+      .then((res) => {
+        if (res.status >= 200 && res.status < 300) {
+          Logger.info(res);
+          resolve(res.data);
+        } else {
+          Logger.error(res);
+          reject(new Error('error'));
+        }
+      })
+      .catch((error) => {
+        Logger.error(error);
+        reject(error);
+      });
+  });
+};
+
+router.post('/send', async (ctx: Koa.Context) => {
+  if (Config.steamship) {
     try {
       const startTime = moment();
       const { text, inputFileId } = ctx.request.body;
@@ -18,9 +44,7 @@ const sendRouter = (router: Router) => {
       if (inputFileId) {
         fileId = inputFileId;
       } else {
-        const {
-          data: { data },
-        } = await $axios.post<any, AxiosResponse<FileRecord>>(Config.server.url.file, {
+        const { data } = await steamshipPost<FileRecord>(Config.steamship.url.file, {
           type: 'blocks',
           blocks: [
             {
@@ -33,46 +57,43 @@ const sendRouter = (router: Router) => {
         fileId = data.file.id;
         Logger.info(fileId);
       }
-      await $axios.post('https://api.steamship.com/api/v1/block/create', {
+      await steamshipPost(Config.steamship.url.file, {
         fileId,
         text,
         tags: [{ kind: 'role', name: 'user', client: { config: {} } }],
         uploadType: 'none',
       });
-      const {
-        data: { status },
-      } = await $axios.post<any, AxiosResponse<StatusRecord>>(
-        'https://api.steamship.com/api/v1/plugin/instance/generate',
-        {
-          appendOutputToFile: false,
-          inputFileId: fileId,
-          pluginInstance: Config.steamship.plugin,
-        },
-      );
-      const taskId = status.taskId;
+      const { status } = await steamshipPost<StatusRecord>(Config.steamship.url.generate, {
+        appendOutputToFile: false,
+        inputFileId: fileId,
+        pluginInstance: Config.steamship.plugin,
+      });
+      const { taskId } = status;
       Logger.info(taskId);
       let pastTime = moment();
       const timeout = Config.server.timeout ? Config.server.timeout * 1000 : 2 * 60 * 1000;
       while (pastTime.diff(startTime) < timeout) {
-        const {
-          data: { status, data },
-        } = await $axios.post<any, AxiosResponse<StatusRecord>>('https://api.steamship.com/api/v1/task/status', {
+        // eslint-disable-next-line no-redeclare, no-await-in-loop
+        const { status, data } = await steamshipPost<StatusRecord>(Config.steamship.url.status, {
           taskId,
         });
         Logger.info(status);
         if (status.state === 'succeeded') {
           ctx.body = new Model(CODE_STATUS.SUCCESS, { text: data?.blocks[0].text, fileId }, '响应成功').getRecord();
-          await $axios.post('https://api.steamship.com/api/v1/block/create', {
+          // eslint-disable-next-line no-await-in-loop
+          await steamshipPost(Config.steamship.url.block, {
             fileId,
             text: data?.blocks[0].text,
             tags: [{ kind: 'role', name: 'system', client: { config: {} } }],
             uploadType: 'none',
           });
           return;
-        } else if (status.state === 'failed') {
+        }
+        if (status.state === 'failed') {
           ctx.body = new Model(CODE_STATUS.ERROR, null, '响应失败').getRecord();
           return;
         }
+        // eslint-disable-next-line no-await-in-loop
         await sleep(2000);
         pastTime = moment();
       }
@@ -80,10 +101,12 @@ const sendRouter = (router: Router) => {
       return;
     } catch (error) {
       Logger.error(error);
-      ctx.body = new Model(CODE_STATUS.ERROR, null, '响应失败').getRecord();
+      ctx.body = new Model(CODE_STATUS.ERROR, error, '响应失败').getRecord();
     }
-  });
-};
+  } else {
+    ctx.body = new Model(CODE_STATUS.NOAPI, null, '接口未开放').getRecord();
+  }
+});
 interface FileRecord {
   data: FileData;
 }
@@ -144,13 +167,4 @@ interface DataRecord {
   blocks: Block[];
 }
 
-interface Block {
-  text: string;
-  tags: Tag[];
-}
-
-interface Tag {
-  name: string;
-  kind: string;
-}
-export default sendRouter;
+export default router;

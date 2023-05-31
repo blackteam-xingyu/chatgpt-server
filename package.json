@@ -4,27 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=development tsc && node  dist/server.js",
-    "dev": "NODE_ENV=development nodemon",
-    "build": "tsc && rm -rf ./dist-pkg && pkg . && cp -r conf.d dist-pkg/ && tar -zcvf dist-pkg.tar.gz ./dist-pkg"
+    "lint": "eslint . --ext .ts",
+    "start": "rm -rf ./dist && NODE_ENV=development tsc && node --experimental-modules --es-module-specifier-resolution=node  dist/server.js",
+    "start:prod": "rm -rf ./dist &&  tsc && node --experimental-modules --es-module-specifier-resolution=node  dist/server.js",
+    "dev": "rm -rf ./dist && NODE_ENV=development nodemon",
+    "dev:prod": "rm -rf ./dist && nodemon",
+    "init:db": "rm -rf ./prisma/db && rm -rf ./prisma/migrations && prisma migrate dev --name initialize",
+    "build": "npm run init:db && rm -rf ./dist && tsc  && rm -rf ./dist-pkg && pkg . && cp -r conf.d dist-pkg/"
   },
+  "type": "module",
   "author": "blackteam_xingyu",
   "license": "MIT",
-  "bin": "dist/server.js",
-  "pkg": {
-    "options": [
-      "experimental-modules",
-      "es-module-specifier-resolution=node"
-    ],
-    "scripts": "dist/**/*.js",
-    "targets": [
-      "node16-linux-x64"
-    ],
-    "outputPath": "dist-pkg"
-  },
   "dependencies": {
+    "@prisma/client": "^4.15.0",
     "axios": "0.27.2",
+    "https-proxy-agent": "^7.0.0",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
     "koa-json-error": "^3.1.2",
@@ -32,19 +26,28 @@
     "koa-parameter": "^3.0.1",
     "koa-router": "^12.0.0",
     "koa2-cors": "^2.0.6",
+    "lodash": "^4.17.21",
     "log4js": "^6.9.1",
     "moment": "^2.29.4",
+    "node-fetch": "^3.3.1",
     "tunnel": "^0.0.6",
     "yaml": "^2.3.0"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.1",
     "@types/koa": "^2.13.6",
     "@types/koa-router": "^7.4.4",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^20.2.3",
-    "eslint": "^8.23.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "agent-base": "^7.1.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.41.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
+    "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }

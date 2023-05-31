@@ -1,0 +1,81 @@
+server:
+  port: 3000
+  proxy:
+    host: 127.0.0.1
+    port: 33210
+  timeout: 150
+  url:
+    file: https://api.steamship.com/api/v1/file/create
+    block: https://api.steamship.com/api/v1/block/create
+    generate: https://api.steamship.com/api/v1/plugin/instance/generate
+    status: https://api.steamship.com/api/v1/task/status
+  channel:
+    #- steamship
+    - openai
+steamship:
+  token: 6A42E5E5-4443-4E4D-AD5A-582BF004E378 #steamship的token
+  workspace: B9C5A25A-6B4E-4DEA-8718-507316F19536 #steamship的x-workspace-id
+  plugin: gpt-4-814 #steamship所创建的plugin名称
+openai:
+  token: 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 #token
+  organization: org-5WXBqzgqp55BYedDbsifHCai
+  default:
+    completions:
+      count: 1 #默认生成文章或者语句的数量
+      max_token: 2048 #默认token 最大值
+    chat:
+      memory: 10 #配置聊天时对上下文记忆的数量
+      max_token: 2048 #默认token最大值
+    edits:
+      count: 1 #默认生成文章或者语句的数量
+    image:
+      size: 256x256 #默认图片大小，仅支持三种 256x256 512x512 1024x1024
+      count: 4 #默认生成图片数量，仅支持1-10之间
+      response_format: url #生成图片的格式，仅支持两种 url b64_json
+  url:
+    model: https://api.openai.com/v1/models
+    chat: https://api.openai.com/v1/chat/completions
+    completions: https://api.openai.com/v1/completions
+    edits: https://api.openai.com/v1/edits
+    image: https://api.openai.com/v1/images/generations
+    audio:
+      transcriptions: https://api.openai.com/v1/audio/transcriptions
+      translations: https://api.openai.com/v1/audio/translations
+    finetunes: https://api.openai.com/v1/fine-tunes
+    embeddings: https://api.openai.com/v1/embeddings
+    moderations: https://api.openai.com/v1/moderations
+  models:
+    chat: #用于聊天，通用模型
+      - gpt-4 #支持4096 token
+      - gpt-4-0314 #支持4096 token
+      - gpt-4-32k #支持32k token
+      - gpt-4-32k-0314 #支持32k token
+      - gpt-3.5-turbo
+      - gpt-3.5-turbo-0301
+    completions: #用于诱导性对话，根据需求生成文字，比如写小作文，也可用于聊天
+      - text-davinci-003
+      - text-davinci-002
+      - text-curie-001
+      - text-babbage-001
+      - text-ada-001
+    edits: #用于修改语句
+      - text-davinci-edit-001 #改文章用这个
+      - code-davinci-edit-001 #改代码用这个
+    audio: #语音转文字
+      transcriptions: #用于音频转文本
+        - whisper-1
+      translations: #用于翻译
+        - whisper-1
+    finetunes: #用以微调模型来定制自己的AI
+      - davinci
+      - curie
+      - babbage
+      - ada
+    embeddings: #用于对比文本字符串之间的相关性
+      - text-embedding-ada-002
+      - text-search-ada-doc-001
+    moderations: #审核，用于判断文字是否是敏感话语
+      - text-moderation-stable
+      - text-moderation-latest
+log:
+  path:

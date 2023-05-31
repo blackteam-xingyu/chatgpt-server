@@ -1,6 +1,7 @@
 import path from 'path';
 import log4js from 'log4js';
 import Config from './Config';
+
 const baseFilePath = Config.log.path || path.resolve('logs');
 const baseAppenderConfig: log4js.Appender = {
   type: 'dateFile',
@@ -34,7 +35,7 @@ log4js.configure({
     },
   },
   categories: {
-    tracer: { appenders: getCategoryAppenders(['tracerFile']), level: 'mark' },
+    tracer: { appenders: getCategoryAppenders(['tracerFile']), level: 'trace' },
     default: { appenders: getCategoryAppenders(['defaultFile']), level: 'info' },
     error: { appenders: getCategoryAppenders(['errorFile']), level: 'error' },
   },

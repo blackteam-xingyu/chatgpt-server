@@ -6,27 +6,15 @@ module.exports = {
     ecmaVersion: 'ES2022',
     sourceType: 'module',
   },
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'eslint:recommended',
-    'airbnb-base',
-  ],
-  plugins: [
-    '@typescript-eslint',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'eslint:recommended', 'airbnb-base'],
+  plugins: ['@typescript-eslint'],
   globals: {
     NodeJS: true,
   },
-  ignorePatterns: [
-    'dist',
-    'node_modules',
-  ],
+  ignorePatterns: ['dist', 'node_modules'],
   rules: {
     'arrow-body-style': 'off',
-    'arrow-parens': [
-      'error',
-      'always',
-    ],
+    'arrow-parens': ['error', 'always'],
     'global-require': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
@@ -41,54 +29,77 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-shadow': 'off',
     'no-bitwise': 'off',
-    'no-unused-expressions': ['error', {
-      allowShortCircuit: true,
-      allowTernary: true,
-    }],
-    'no-restricted-globals': ['error', {
-      name: 'event',
-      message: 'Use local parameter instead.',
-    }],
-    'max-len': ['error', 120, {
-      ignoreComments: true,
-      ignoreStrings: true,
-      ignoreTemplateLiterals: true,
-      ignoreUrls: true,
-      ignoreTrailingComments: true,
-    }],
-    'max-lines': ['error', {
-      max: 800,
-      skipComments: true,
-    }],
-    'no-param-reassign': ['error', {
-      props: false,
-    }],
+    'no-unused-expressions': [
+      'error',
+      {
+        allowShortCircuit: true,
+        allowTernary: true,
+      },
+    ],
+    'no-restricted-globals': [
+      'error',
+      {
+        name: 'event',
+        message: 'Use local parameter instead.',
+      },
+    ],
+    'max-len': [
+      'error',
+      120,
+      {
+        ignoreComments: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreUrls: true,
+        ignoreTrailingComments: true,
+      },
+    ],
+    'max-lines': [
+      'error',
+      {
+        max: 800,
+        skipComments: true,
+      },
+    ],
+    'no-param-reassign': [
+      'error',
+      {
+        props: false,
+      },
+    ],
     'no-template-curly-in-string': 'off',
-    'object-curly-newline': ['error', {
-      consistent: true,
-      multiline: true,
-    }],
-    'prefer-destructuring': ['warn', {
-      AssignmentExpression: {
-        array: false,
-        object: false,
+    'object-curly-newline': [
+      'error',
+      {
+        consistent: true,
+        multiline: true,
       },
-      VariableDeclarator: {
-        array: false,
-        object: true,
+    ],
+    'prefer-destructuring': [
+      'warn',
+      {
+        AssignmentExpression: {
+          array: false,
+          object: false,
+        },
+        VariableDeclarator: {
+          array: false,
+          object: true,
+        },
       },
-    }],
+    ],
     semi: 'error',
     'space-before-function-paren': ['error', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
-    'spaced-comment': ['error', 'always', {
-      block: { exceptions: ['*'] },
-    }],
-    'no-console': process.env.NODE_ENV === 'production'
-      ? ['error', { allow: ['error'] }]
-      : ['warn', { allow: ['error'] }],
-    'no-debugger': process.env.NODE_ENV === 'production'
-      ? 'error'
-      : 'warn',
+    'spaced-comment': [
+      'error',
+      'always',
+      {
+        block: { exceptions: ['*'] },
+      },
+    ],
+    'no-console':
+      process.env.NODE_ENV === 'production' ? ['error', { allow: ['error'] }] : ['warn', { allow: ['error'] }],
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
     'comma-dangle': ['error', 'always-multiline'],
     indent: ['error', 2, { SwitchCase: 1, MemberExpression: 'off' }],
     'quote-props': ['error', 'as-needed'],
@@ -104,12 +115,16 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-unused-vars': process.env.NODE_ENV === 'production'
-      ? ['error', { ignoreRestSiblings: true, varsIgnorePattern: '_ignored' }]
-      : ['warn', { ignoreRestSiblings: true, varsIgnorePattern: '_ignored' }],
-    '@typescript-eslint/naming-convention': ['warn', {
-      selector: 'enumMember',
-      format: ['PascalCase'],
-    }],
+    '@typescript-eslint/no-unused-vars':
+      process.env.NODE_ENV === 'production'
+        ? ['error', { ignoreRestSiblings: true, varsIgnorePattern: '_ignored' }]
+        : ['warn', { ignoreRestSiblings: true, varsIgnorePattern: '_ignored' }],
+    '@typescript-eslint/naming-convention': [
+      'warn',
+      {
+        selector: 'enumMember',
+        format: ['PascalCase'],
+      },
+    ],
   },
 };
