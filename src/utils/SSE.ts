@@ -29,7 +29,9 @@ const SSE = async <T>(
       'Content-Type': 'application/json',
       ...headers,
     },
-    agent: new HttpsProxyAgent(`http://${Config.server.proxy?.host}:${Config.server.proxy?.port}`),
+    agent: Config.server.proxy
+      ? new HttpsProxyAgent(`http://${Config.server.proxy.host}:${Config.server.proxy.port}`)
+      : undefined,
   });
   if (res.status !== 200) {
     Logger.debug(res.status);
@@ -87,7 +89,7 @@ const SSE = async <T>(
       }
     } catch (e) {
       // 出现错误, 结束流
-      console.error(e);
+      Logger.error(e);
       stream.write(`${JSON.stringify(new Model(CODE_STATUS.ERROR, chunk, 'error'))}\n`);
     }
   });
