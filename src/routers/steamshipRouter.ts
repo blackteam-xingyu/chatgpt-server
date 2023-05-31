@@ -2,7 +2,6 @@ import Router from 'koa-router';
 import Koa from 'koa';
 import moment from 'moment';
 import { AxiosResponse } from 'axios';
-import _ from 'lodash';
 import $axios from '../utils/Axios';
 import Config from '../utils/Config';
 import sleep from '../utils/Sleep';

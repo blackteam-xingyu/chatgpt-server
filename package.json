@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --fix --ext .ts",
+    "lint": "eslint . --ext .ts",
     "start": "rm -rf ./dist && NODE_ENV=development tsc && node --experimental-modules --es-module-specifier-resolution=node  dist/server.js",
+    "start:prod": "rm -rf ./dist &&  tsc && node --experimental-modules --es-module-specifier-resolution=node  dist/server.js",
     "dev": "rm -rf ./dist && NODE_ENV=development nodemon",
+    "dev:prod": "rm -rf ./dist && nodemon",
     "init:db": "rm -rf ./prisma/db && rm -rf ./prisma/migrations && prisma migrate dev --name initialize",
-    "build": "npm run init:db && rm -rf ./dist && tsc  && rm -rf ./dist-pkg && pkg . && cp -r conf.d dist-pkg/ && tar -zcvf ./pkg/dist-pkg.tar.gz ./dist-pkg"
+    "build": "npm run init:db && rm -rf ./dist && tsc  && rm -rf ./dist-pkg && pkg . && cp -r conf.d dist-pkg/"
   },
   "type": "module",
   "author": "blackteam_xingyu",
@@ -27,7 +29,7 @@
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
-    "@prisma/client": "^4.14.1",
+    "@prisma/client": "^4.15.0",
     "agent-base": "^7.1.0",
     "axios": "0.27.2",
     "http-proxy-agent": "^7.0.0",
@@ -59,7 +61,7 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
     "nodemon": "^2.0.22",
-    "prisma": "^4.14.1",
+    "prisma": "^4.15.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   }
